@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Bookshelf App</title>
+
+    <!-- Impor script kamu di sini -->
+    <!-- Lampirkan `defer` jika pemanggilan dilakukan dalam <head> -->
+    <script defer src="main.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Bookshelf App</h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Tambah Buku Baru</h2>
+        <form id="bookForm" data-testid="bookForm">
+          <div>
+            <label for="bookFormTitle">Judul</label>
+            <input id="bookFormTitle" type="text" required data-testid="bookFormTitleInput" />
+          </div>
+          <div>
+            <label for="bookFormAuthor">Penulis</label>
+            <input id="bookFormAuthor" type="text" required data-testid="bookFormAuthorInput" />
+          </div>
+          <div>
+            <label for="bookFormYear">Tahun terbit</label>
+            <input id="bookFormYear" type="number" required data-testid="bookFormYearInput" />
+          </div>
+          <div>
+            <label for="bookFormIsComplete">Selesai dibaca</label>
+            <input id="bookFormIsComplete" type="checkbox" data-testid="bookFormIsCompleteCheckbox" />
+          </div>
+          <button id="bookFormSubmit" class="submit-btn" type="submit" data-testid="bookFormSubmitButton">Input Buku</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Cari Buku</h2>
+        <form id="searchBook" data-testid="searchBookForm">
+          <!-- <label for="searchBookTitle">Judul</label> -->
+          <input id="searchBookTitle" type="text" placeholder="Masukkan judul buku" data-testid="searchBookFormTitleInput" />
+          <button id="searchSubmit" class="submit-btn" type="submit" data-testid="searchBookFormSubmitButton">Cari</button>
+        </form>
+      </section>
+
+      <section class="list-book">
+        <h2>Belum Selesai Dibaca</h2>
+
+        <div id="incompleteBookList" data-testid="incompleteBookList">
+          <!-- 
+            Ini adalah struktur HTML untuk masing-masing buku.
+            Pastikan susunan elemen beserta atribut data-testid menyesuaikan seperti contoh ini.
+          -->
+          <!-- <div data-bookid="123123123" data-testid="bookItem">
+            <h3 data-testid="bookItemTitle">Judul Buku 1</h3>
+            <p data-testid="bookItemAuthor">Penulis: Penulis Buku 1</p>
+            <p data-testid="bookItemYear">Tahun: 2030</p>
+            <div>
+              <button data-testid="bookItemIsCompleteButton">Selesai dibaca</button>
+              <button data-testid="bookItemDeleteButton">Hapus Buku</button>
+              <button data-testid="bookItemEditButton">Edit Buku</button>
+            </div>
+          </div> -->
+        </div>
+      </section>
+
+      <section class="list-book">
+        <h2>Selesai Dibaca</h2>
+
+        <div id="completeBookList" data-testid="completeBookList">
+          <!-- 
+            Ini adalah struktur HTML untuk masing-masing buku.
+            Pastikan susunan elemen beserta atribut data-testid menyesuaikan seperti contoh ini.
+          -->
+          <!-- <div data-bookid="456456456" data-testid="bookItem">
+            <h3 data-testid="bookItemTitle">Judul Buku 2</h3>
+            <p data-testid="bookItemAuthor">Penulis: Penulis Buku 2</p>
+            <p data-testid="bookItemYear">Tahun: 2030</p>
+            <div>
+              <button data-testid="bookItemIsCompleteButton">Selesai dibaca</button>
+              <button data-testid="bookItemDeleteButton">Hapus Buku</button>
+              <button data-testid="bookItemEditButton">Edit Buku</button>
+            </div>
+          </div> -->
+        </div>
+      </section>
+
+      <div id="overlayBlur" class="overlay-blur">
+        <div id="editPopup" class="edit-popup">
+          <h3>Edit Buku</h3>
+          <form id="editBookForm">
+            <input type="hidden" id="editBookId" />
+            <div>
+              <label>Judul:</label><br />
+              <input type="text" id="editBookTitle" title="editBookTitle" required />
+            </div>
+            <div>
+              <label>Penulis:</label><br />
+              <input type="text" id="editBookAuthor" title="editBookAuthor" required />
+            </div>
+            <div>
+              <label>Tahun terbit:</label><br />
+              <input type="number" id="editBookYear" title="editBookYear" required />
+            </div>
+            <div>
+              <button class="submit-btn" type="submit">Simpan</button>
+              <button class="cancel-btn" type="button" onclick="closeEditPopup()">Batal</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      © 2025 rizkyar - All Right Reserved.
+    </footer>
+  </body>
+</html>
