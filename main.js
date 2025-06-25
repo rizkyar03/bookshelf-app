@@ -5,8 +5,6 @@ let books = [];
 const RENDER_EVENT = 'render-book';
 const SAVED_EVENT = 'saved-book';
 const STORAGE_KEY = 'BOOKSHELF_APPS';
-// const READ_BOOKS = 'READ_BOOKS'
-// const UNREAD_BOOKS = 'UNREAD_BOOKS'
 
 // Check if Browser is Provide Local Storage or Not
 function isStorageExist() {
@@ -25,21 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
     addBook();
   });
 
+  // Search Function
   const searchForm = document.getElementById('searchBook');
   const searchInput = document.getElementById('searchBookTitle');
 
-  // Jalankan pencarian saat mengetik
   searchInput.addEventListener('input', function () {
     const query = searchInput.value;
 
     if (query.trim() === '') {
-      document.dispatchEvent(new Event(RENDER_EVENT)); // tampilkan semua buku
+      document.dispatchEvent(new Event(RENDER_EVENT));
     } else {
-      searchBooksByTitle(query); // tampilkan hasil pencarian
+      searchBooksByTitle(query);
     }
   });
 
-  // Cegah submit default
   searchForm.addEventListener('submit', function (event) {
     event.preventDefault();
   });
@@ -105,7 +102,6 @@ document.addEventListener(RENDER_EVENT, () => {
 // SAVED_EVENT Listener
 document.addEventListener(SAVED_EVENT, () => {
   // console.log(localStorage.getItem(STORAGE_KEY));
-  // alert('Data Berhasil Disimpan');
 });
 
 // Generate Book Object
