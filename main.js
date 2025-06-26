@@ -101,7 +101,7 @@ document.addEventListener(RENDER_EVENT, () => {
 
 // SAVED_EVENT Listener
 document.addEventListener(SAVED_EVENT, () => {
-  // console.log(localStorage.getItem(STORAGE_KEY));
+  console.log('Data Saved');
 });
 
 // Generate Book Object
@@ -138,30 +138,24 @@ function addBook() {
 function createBook(bookObject) {
   const textTitle = document.createElement('h3');
   textTitle.innerText = bookObject.title;
-  textTitle.setAttribute('data-testid', 'bookItemTitle');
 
   const textAuthor = document.createElement('p');
   textAuthor.innerText = bookObject.author;
-  textAuthor.setAttribute('data-testid', 'bookItemAuthor');
 
   const textYear = document.createElement('p');
   textYear.innerText = `(${bookObject.year})`;
-  textYear.setAttribute('data-testid', 'bookItemYear');
 
   const isCompleteBtn = document.createElement('input');
   isCompleteBtn.setAttribute('type', 'checkbox');
-  isCompleteBtn.setAttribute('data-testid', 'bookItemIsCompleteButton');
   isCompleteBtn.classList = 'action-btn complete-check';
   isCompleteBtn.checked = bookObject.isComplete;
 
   const editBtn = document.createElement('img');
-  editBtn.setAttribute('data-testid', 'bookItemEditButton');
   editBtn.setAttribute('src', 'assets/edit.svg');
   editBtn.classList = 'action-btn';
   editBtn.innerText = 'Edit';
 
   const deleteBtn = document.createElement('img');
-  deleteBtn.setAttribute('data-testid', 'bookItemDeleteButton');
   deleteBtn.setAttribute('src', 'assets/delete.svg');
   deleteBtn.classList = 'action-btn';
   deleteBtn.innerText = 'Delete Book';
@@ -175,8 +169,6 @@ function createBook(bookObject) {
 
   const container = document.createElement('div');
   container.classList = 'card';
-  container.setAttribute('data-bookid', `${bookObject.id}`);
-  container.setAttribute('data-testid', 'bookItem');
   container.append(textTitle, textAuthor, textYear, actionContainer);
 
   isCompleteBtn.addEventListener('change', () => {
