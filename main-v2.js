@@ -51,16 +51,6 @@ function loadDataFromStorage() {
 
   if (data !== null) {
     books = data;
-    readBooks.length = 0;
-    unreadBooks.length = 0;
-
-    for (const book of books) {
-      if (book.isComplete) {
-        readBooks.push(book);
-      } else {
-        unreadBooks.push(book);
-      }
-    }
   }
 
   document.dispatchEvent(new Event(RENDER_EVENT));
@@ -75,31 +65,38 @@ function saveDataToStorage() {
   }
 }
 
+// Update Data
 function updateData() {
-  books = [...readBooks, ...unreadBooks];
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveDataToStorage();
 }
 
-function renderBooks(containerId, bookList) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
+function renderBooks(bookArr) {
+  const unreadBookContainer = document.getElementById('incompleteBookList');
+  const readBookContainer = document.getElementById('completeBookList');
 
-  for (const book of bookList) {
+  unreadBookContainer.innerHTML = '';
+  readBookContainer.innerHTML = '';
+
+  for (const book of bookArr) {
     const bookElement = createBook(book);
-    container.append(bookElement);
+
+    if (book.isComplete) {
+      readBookContainer.append(bookElement);
+    } else {
+      unreadBookContainer.append(bookElement);
+    }
   }
 }
 
 // RENDER_EVENT Listener
 document.addEventListener(RENDER_EVENT, () => {
-  renderBooks('completeBookList', readBooks);
-  renderBooks('incompleteBookList', unreadBooks);
+  renderBooks(books);
 });
 
 // SAVED_EVENT Listener
 document.addEventListener(SAVED_EVENT, () => {
-  // console.log(localStorage.getItem(STORAGE_KEY));
+  console.log('Data saved');
 });
 
 // Generate Book Object
@@ -122,12 +119,7 @@ function addBook() {
   const isComplete = document.getElementById('bookFormIsComplete').checked;
 
   const bookObject = generateBookObject(id, title, author, year, isComplete);
-
-  if (isComplete) {
-    readBooks.push(bookObject);
-  } else {
-    unreadBooks.push(bookObject);
-  }
+  books.push(bookObject);
 
   updateData();
 }
@@ -194,25 +186,12 @@ function createBook(bookObject) {
 
 // Move Book
 function moveBook(id) {
-  const unreadBookIndex = unreadBooks.findIndex((book) => book.id === id);
-  if (unreadBookIndex > -1) {
-    const book = unreadBooks.splice(unreadBookIndex, 1)[0];
-    book.isComplete = true;
-    readBooks.push(book);
+  const targetBook = books.find((book) => book.id === id);
+  if (!targetBook) return;
 
-    updateData();
-    return;
-  }
+  targetBook.isComplete = !targetBook.isComplete;
 
-  const readBookIndex = readBooks.findIndex((book) => book.id === id);
-  if (readBookIndex > -1) {
-    const book = readBooks.splice(readBookIndex, 1)[0];
-    book.isComplete = false;
-    unreadBooks.push(book);
-
-    updateData();
-    return;
-  }
+  updateData();
 }
 
 // Delete Book
@@ -221,15 +200,8 @@ function deleteBook(id) {
   const confirmDelete = confirm(`Apa anda yakin ingin menghapus ${targetBook.title}?`);
 
   if (confirmDelete) {
-    const unreadBookIndex = unreadBooks.findIndex((book) => book.id === id);
-    if (unreadBookIndex > -1) {
-      unreadBooks.splice(unreadBookIndex, 1);
-    }
-
-    const readBookIndex = readBooks.findIndex((book) => book.id === id);
-    if (readBookIndex > -1) {
-      readBooks.splice(readBookIndex, 1);
-    }
+    const targetBookIndex = books.findIndex((book) => book.id === id);
+    books.splice(targetBookIndex, 1);
 
     updateData();
   }
@@ -238,18 +210,14 @@ function deleteBook(id) {
 // Search Book
 function searchBooksByTitle(query) {
   const normalizedQuery = query.trim().toLowerCase();
+  const filteredBooks = books.filter((book) => book.title.toLowerCase().includes(normalizedQuery));
 
-  const filteredReadBooks = readBooks.filter((book) => book.title.toLowerCase().includes(normalizedQuery));
-
-  const filteredUnreadBooks = unreadBooks.filter((book) => book.title.toLowerCase().includes(normalizedQuery));
-
-  renderBooks('completeBookList', filteredReadBooks);
-  renderBooks('incompleteBookList', filteredUnreadBooks);
+  renderBooks(filteredBooks);
 }
 
 // Edit Book
 function editBook(id) {
-  const book = readBooks.find((b) => b.id === id) || unreadBooks.find((b) => b.id === id);
+  const book = books.find((b) => b.id === id);
 
   if (!book) return;
 
@@ -275,7 +243,7 @@ document.getElementById('editBookForm').addEventListener('submit', (event) => {
   const newAuthor = document.getElementById('editBookAuthor').value;
   const newYear = parseInt(document.getElementById('editBookYear').value);
 
-  const book = readBooks.find((b) => b.id === id) || unreadBooks.find((b) => b.id === id);
+  const book = books.find((b) => b.id === id);
 
   if (!book) return;
 
